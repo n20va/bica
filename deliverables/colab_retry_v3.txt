@@ -1,0 +1,36 @@
+# После повторной загрузки обновлённого bica_colab_bundle.zip.
+# Вставьте весь файл в одну новую ячейку Colab. Модель client уже должна быть загружена.
+import importlib
+import json
+import shutil
+from types import SimpleNamespace
+from google.colab import files
+import illusion_agent.core as core
+import illusion_agent.colab as colab
+
+importlib.invalidate_caches()
+importlib.reload(core)
+importlib.reload(colab)
+from illusion_agent.colab import run_pilot
+from illusion_agent.cli import export_review
+
+# Одна картинка, ВСЕ четыре режима: 4 случая, 10 обращений.
+probe = run_pilot(client, MANIFEST, SAVE / 'probe_v3', limit=1, max_calls=12)
+print('Проверка:', probe)
+if probe['errors'] or probe['completed_cases'] != 4:
+    raise RuntimeError('Проверка не прошла. Пришлите этот вывод и trace.jsonl из probe_v3. Полный запуск не начат.')
+
+# Новая серия целиком, включая базовые режимы. Старые результаты сохраняются.
+summary = run_pilot(client, MANIFEST, SAVE / 'pilot_v3', max_calls=70)
+print('Полный пилот:', json.dumps(summary, ensure_ascii=False, indent=2))
+if summary['completed_cases'] != summary['planned_cases']:
+    raise RuntimeError('Пилот не завершён. Сохранённые случаи не потеряны; пришлите вывод.')
+
+REVIEW = SAVE / 'reviewer_a_v3'
+if not REVIEW.exists():
+    export_review(SimpleNamespace(run=str(SAVE / 'pilot_v3'), manifest=str(MANIFEST),
+                                 output=str(REVIEW), seed=91))
+print('Технических ошибок:', summary['errors'], '— это не оценка точности распознавания.')
+result_archive = shutil.make_archive('/content/bica_real_pilot_results_v3', 'zip', SAVE)
+files.download(result_archive)
+print('Передайте скачанный bica_real_pilot_results_v3.zip для анализа.')

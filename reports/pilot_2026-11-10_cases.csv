@@ -1,0 +1,25 @@
+image_id,mode,status,calls,error,labels
+ambi-debug-000,direct,ok,1,,Car with snow on it | Car with a face made of snow | Car covered in snow
+ambi-debug-000,evidence,error,2,Expected at most four interpretations,
+ambi-debug-000,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-000,repeat,ok,3,,Car with snow on it | Car with a face made of snow | Car covered in snow
+ambi-debug-001,direct,ok,1,,man smoking a pipe | man wearing a hat | man with long hair
+ambi-debug-001,evidence,error,2,Expected at most four interpretations,
+ambi-debug-001,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-001,repeat,ok,3,,man smoking a pipe | man wearing a hat | man with long hair
+ambi-debug-002,direct,ok,1,,face with a wide open mouth | abstract figure with a hat | animal with a long snout
+ambi-debug-002,evidence,error,2,Expected at most four interpretations,
+ambi-debug-002,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-002,repeat,ok,3,,face with a wide open mouth | abstract figure with a hat | animal with a long snout
+ambi-debug-003,direct,ok,1,,man wearing a hat | woman wearing a hat | man with a beard
+ambi-debug-003,evidence,error,2,Expected at most four interpretations,
+ambi-debug-003,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-003,repeat,ok,3,,man wearing a hat | woman wearing a hat | man with a beard
+ambi-debug-004,direct,ok,1,,duck in grass | bird in grass | animal in grass
+ambi-debug-004,evidence,error,2,Expected at most four interpretations,
+ambi-debug-004,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-004,repeat,ok,3,,duck in grass | bird in grass | animal in grass
+ambi-debug-005,direct,ok,1,,Chessboard with pieces | Ladders leading to towers | People climbing ladders
+ambi-debug-005,evidence,error,2,Expected at most four interpretations,
+ambi-debug-005,hypotheses,error,2,Expected at most four interpretations,
+ambi-debug-005,repeat,ok,3,,Chessboard with pieces | Ladders leading to towers | People climbing ladders

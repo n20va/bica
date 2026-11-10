@@ -1,0 +1,54 @@
+{
+  "source_sha256": "ae999bb543bf9a8d356e90b7b2dfcc991935399730e17a9903898732286dc342",
+  "summary": {
+    "planned_cases": 24,
+    "completed_cases": 24,
+    "attempted_calls": 48,
+    "errors": 12,
+    "stopped_on_budget": false,
+    "synthetic": false
+  },
+  "by_mode": [
+    {
+      "mode": "direct",
+      "name": "Одиночный запрос",
+      "cases": 6,
+      "ok": 6,
+      "errors": 0,
+      "calls": 6,
+      "planned": 6,
+      "seconds": 60.870041239000784
+    },
+    {
+      "mode": "repeat",
+      "name": "Повторная проверка",
+      "cases": 6,
+      "ok": 6,
+      "errors": 0,
+      "calls": 18,
+      "planned": 18,
+      "seconds": 184.66962631900014
+    },
+    {
+      "mode": "hypotheses",
+      "name": "Поиск альтернатив",
+      "cases": 6,
+      "ok": 0,
+      "errors": 6,
+      "calls": 12,
+      "planned": 18,
+      "seconds": 153.7498418400005
+    },
+    {
+      "mode": "evidence",
+      "name": "Альтернативы + признаки",
+      "cases": 6,
+      "ok": 0,
+      "errors": 6,
+      "calls": 12,
+      "planned": 18,
+      "seconds": 151.70199464500047
+    }
+  ],
+  "direct_repeat_equal": 6
+}
