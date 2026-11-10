@@ -2,6 +2,7 @@
 import base64
 import hashlib
 import json
+import re
 import time
 from pathlib import Path
 
@@ -18,8 +19,16 @@ def sha256(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def _json_payload(raw):
+    """Accept one outer Markdown fence, never extract/repair JSON from prose."""
+    stripped = raw.strip()
+    fenced = re.fullmatch(r"```(?:json)?[ \t]*\r?\n(.*?)\r?\n```", stripped,
+                          flags=re.DOTALL | re.IGNORECASE)
+    return fenced.group(1) if fenced else stripped
+
+
 def parse_response(raw):
-    value = json.loads(raw)
+    value = json.loads(_json_payload(raw))
     if not isinstance(value, dict) or set(value) != {"interpretations", "cue_verdict"}:
         raise ValueError("Response must contain interpretations and cue_verdict only")
     if value["cue_verdict"] not in {"supported", "rejected", "uncertain", "not_applicable"}:
@@ -123,7 +132,16 @@ def run_case(client, row, cue, mode, seed, emit):
         emit({"event": "response", "step": step, "raw": raw, "usage": usage,
               "elapsed_s": time.monotonic() - start})
         answer = parse_response(raw)
-        if bool(cue["text"]) == (answer["cue_verdict"] == "not_applicable"):
+        if _json_payload(raw) != raw.strip():
+            emit({"event": "normalization", "step": step, "kind": "outer_json_fence"})
+        if not cue["text"] and answer["cue_verdict"] != "not_applicable":
+            # There is no cue to evaluate. Keep the model's exact answer in the
+            # trace AND conversation; mask only this inapplicable output field.
+            emit({"event": "normalization", "step": step, "kind": "absent_cue",
+                  "field": "cue_verdict", "original": answer["cue_verdict"],
+                  "value": "not_applicable"})
+            answer["cue_verdict"] = "not_applicable"
+        if cue["text"] and answer["cue_verdict"] == "not_applicable":
             raise ValueError("cue_verdict inconsistent with presence/absence of cue")
         messages.append({"role": "assistant", "content": raw})
     return answer

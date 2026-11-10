@@ -94,6 +94,63 @@ class ExperimentTests(unittest.TestCase):
             run_case(Bad(), row, row["cues"][0], "evidence", 1, events.append)
         self.assertEqual([x["event"] for x in events], ["request", "response"])
 
+    def test_fenced_answer_and_absent_cue_in_all_modes_preserve_content(self):
+        obj = {"interpretations": [
+            {"label": label, "status": "supported", "evidence": [
+                {"region": region, "feature": feature}], "against": []}
+            for label, region, feature in [
+                ("Car with snow on it", "top of car", "snow covering the top of the car"),
+                ("Car with a face made of snow", "front of car", "snow forming a face on the front of the car"),
+                ("Car covered in snow", "entire car", "snow covering the entire car")]],
+            "cue_verdict": "supported"}
+        raw = "```json\n" + json.dumps(obj, indent=2) + "\n```"
+        received = []
+        class Fenced(MockClient):
+            def complete(self, messages, seed):
+                received.append(json.loads(json.dumps(messages)))
+                return raw, {}
+        row = load_manifest(self.manifest)[0]
+        for mode, calls in [("direct", 1), ("repeat", 3), ("hypotheses", 3), ("evidence", 3)]:
+            with self.subTest(mode=mode):
+                events = []
+                result = run_case(Fenced(), row, row["cues"][0], mode, 42, events.append)
+                self.assertEqual(result["interpretations"], obj["interpretations"])
+                self.assertEqual(result["cue_verdict"], "not_applicable")
+                responses = [e for e in events if e["event"] == "response"]
+                self.assertEqual([e["raw"] for e in responses], [raw] * calls)
+                normalizations = [e for e in events if e["event"] == "normalization"]
+                self.assertEqual(len(normalizations), 2 * calls)
+                self.assertTrue(all(e["original"] == "supported" for e in normalizations
+                                    if e["kind"] == "absent_cue"))
+        self.assertTrue(all(m["content"] == raw for history in received
+                            for m in history if m["role"] == "assistant"))
+
+    def test_only_outer_fence_is_accepted(self):
+        payload = json.dumps({"interpretations": [], "cue_verdict": "not_applicable"})
+        for wrapper in ["```json\n{}\n```", "```\n{}\n```", " \n```JSON\r\n{}\r\n```\n"]:
+            self.assertEqual(parse_response(wrapper.format(payload)), json.loads(payload))
+        for raw in ["Here is the answer: " + payload, "```json\n" + payload,
+                    "```json\n" + payload + "\n```\nExplanation",
+                    "```json\n" + payload + "\n```\n```json\n" + payload + "\n```"]:
+            with self.subTest(raw=raw), self.assertRaises(ValueError):
+                parse_response(raw)
+
+    def test_real_cue_verdict_is_not_masked(self):
+        row = load_manifest(self.manifest)[0]
+        cue = {"id": "c1", "text": "A vase"}
+        for verdict in ["supported", "rejected", "uncertain", "not_applicable"]:
+            class Response(MockClient):
+                def complete(self, messages, seed):
+                    return json.dumps({"interpretations": [], "cue_verdict": verdict}), {}
+            events = []
+            if verdict == "not_applicable":
+                with self.assertRaises(ValueError):
+                    run_case(Response(), row, cue, "direct", 42, events.append)
+            else:
+                answer = run_case(Response(), row, cue, "direct", 42, events.append)
+                self.assertEqual(answer["cue_verdict"], verdict)
+            self.assertFalse(any(e["event"] == "normalization" for e in events))
+
     def test_budget_checked_before_requests_or_output_creation(self):
         output = self.root / "run"
         with self.assertRaises(SystemExit), patch.object(MockClient, "complete") as call:
