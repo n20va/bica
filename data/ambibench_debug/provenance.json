@@ -1,0 +1,47 @@
+{
+  "repository": "BLNL/AmbiBench",
+  "revision": "512480b96a8b607b08d3679cb33fa919ebaab8ed",
+  "selection": "first unique bistable_open filenames, sorted",
+  "purpose": "debug only; never an untouched test set",
+  "metadata_sha256": "ea807e2fcdcb6cc9a8a4954cd96f411a8c3dbb1b14e928c801db4944c175f9b9",
+  "dataset_card_license": "mit",
+  "note": "Dataset card licensing is not independent verification of rights for every source artwork.",
+  "items": [
+    {
+      "id": "ambi-debug-000",
+      "source_filename": "1830_netimg_Hidden_Instances_2315.jpg",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1830_netimg_Hidden_Instances_2315.jpg",
+      "sha256": "cf17688d55e83dc95b0cdc26b41e3c403c0aace2876a44ce8cc56bb5b99384f7"
+    },
+    {
+      "id": "ambi-debug-001",
+      "source_filename": "1846_netimg_Optical_illusion_1854.webp",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1846_netimg_Optical_illusion_1854.webp",
+      "sha256": "a366bbe7c762e87353c335e054e881a3fe9a4008f55ff8161e851ca06b1a519a"
+    },
+    {
+      "id": "ambi-debug-002",
+      "source_filename": "1854_netimg_Perceptual_Illusions_1892.jpg",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1854_netimg_Perceptual_Illusions_1892.jpg",
+      "sha256": "fbe2cf37ebba976ba5f2013aa7f5fa607673b4a44be34501343949765a1cfd4e"
+    },
+    {
+      "id": "ambi-debug-003",
+      "source_filename": "1861_netimg_ambiguous_figure_11.png",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1861_netimg_ambiguous_figure_11.png",
+      "sha256": "3142b64c5b23e50291acf12f91e9794852c9450b923352545bc77c51a72f757e"
+    },
+    {
+      "id": "ambi-debug-004",
+      "source_filename": "1864_netimg_ambiguous_figure_114.jpg",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1864_netimg_ambiguous_figure_114.jpg",
+      "sha256": "c3ab59280d0981ac93294cf090067640a6194e945197f6c78e2c53de65f30dce"
+    },
+    {
+      "id": "ambi-debug-005",
+      "source_filename": "1865_netimg_ambiguous_figure_119.jpg",
+      "source_url": "https://huggingface.co/datasets/BLNL/AmbiBench/resolve/512480b96a8b607b08d3679cb33fa919ebaab8ed/test/1865_netimg_ambiguous_figure_119.jpg",
+      "sha256": "926fe1e90099bbdc49d7ee9ec10c487d1e006d9b8c955af7dfb090bae5d5cbab"
+    }
+  ]
+}

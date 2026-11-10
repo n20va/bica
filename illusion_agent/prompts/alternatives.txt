@@ -1,0 +1,1 @@
+Consider a different interpretation of the same visual elements, if supported. Keep earlier plausible interpretations available instead of automatically replacing them. Explicitly mark unsupported possibilities as uncertain or rejected. Return the full hypothesis list.

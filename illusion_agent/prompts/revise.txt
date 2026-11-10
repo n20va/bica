@@ -1,0 +1,1 @@
+Review your previous response against the same image. Correct errors and return your best complete answer in the required JSON format.
